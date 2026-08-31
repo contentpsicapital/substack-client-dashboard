@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { DateRangeOption, TimeSeriesPoint } from '../types';
-import { MOCK_TIME_SERIES, MOCK_TRAFFIC_SOURCES } from '../mockData';
+import { MOCK_TIME_SERIES, MOCK_TRAFFIC_SOURCES, MOCK_ARTICLES, MOCK_NOTES } from '../mockData';
 import { 
   Users, 
   TrendingUp, 
@@ -34,11 +34,20 @@ interface DashboardTabProps {
 export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
   const chartData: TimeSeriesPoint[] = MOCK_TIME_SERIES[dateRange] || MOCK_TIME_SERIES['Last 30 Days'];
 
-  // Dynamic calculations
-  const totalSubscribers = chartData[chartData.length - 1]?.subscribers || 12968;
-  const initialSubs = chartData[0]?.subscribers || 11200;
+  // Dynamic calculations from real scraped data
+  const totalSubscribers = chartData[chartData.length - 1]?.subscribers || 182;
+  const initialSubs = chartData[0]?.subscribers || 158;
   const netGained = totalSubscribers - initialSubs;
   const growthPercent = ((netGained / initialSubs) * 100).toFixed(1);
+
+  // Compute account-wide totals dynamically from all articles + notes
+  const accountTotals = useMemo(() => {
+    const totalViews = MOCK_ARTICLES.reduce((s, a) => s + a.views, 0) + MOCK_NOTES.reduce((s, n) => s + n.impressions, 0);
+    const totalLikes = MOCK_ARTICLES.reduce((s, a) => s + a.likes, 0) + MOCK_NOTES.reduce((s, n) => s + n.likes, 0);
+    const totalRestacks = MOCK_NOTES.reduce((s, n) => s + n.restacks, 0);
+    const totalComments = MOCK_ARTICLES.reduce((s, a) => s + a.comments, 0) + MOCK_NOTES.reduce((s, n) => s + n.replies, 0);
+    return { totalViews, totalLikes, totalRestacks, totalComments };
+  }, []);
 
   const COLORS = ['#d97706', '#2563eb', '#059669', '#475569', '#7c3aed'];
 
@@ -69,7 +78,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
               <Eye className="w-3.5 h-3.5 text-blue-400" />
               <span>Total Views</span>
             </div>
-            <p className="text-2xl font-bold font-display text-white mt-1">76,650</p>
+            <p className="text-2xl font-bold font-display text-white mt-1">{accountTotals.totalViews.toLocaleString()}</p>
             <span className="text-[10px] text-slate-400">across all articles & notes</span>
           </div>
 
@@ -78,7 +87,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
               <Heart className="w-3.5 h-3.5 text-rose-400" />
               <span>Total Likes</span>
             </div>
-            <p className="text-2xl font-bold font-display text-white mt-1">2,335</p>
+            <p className="text-2xl font-bold font-display text-white mt-1">{accountTotals.totalLikes.toLocaleString()}</p>
             <span className="text-[10px] text-slate-400">reader appreciations</span>
           </div>
 
@@ -87,7 +96,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
               <Repeat className="w-3.5 h-3.5 text-emerald-400" />
               <span>Total Restacks</span>
             </div>
-            <p className="text-2xl font-bold font-display text-white mt-1">251</p>
+            <p className="text-2xl font-bold font-display text-white mt-1">{accountTotals.totalRestacks.toLocaleString()}</p>
             <span className="text-[10px] text-slate-400">viral shares & quotes</span>
           </div>
 
@@ -96,7 +105,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
               <MessageCircle className="w-3.5 h-3.5 text-amber-400" />
               <span>Total Comments</span>
             </div>
-            <p className="text-2xl font-bold font-display text-white mt-1">496</p>
+            <p className="text-2xl font-bold font-display text-white mt-1">{accountTotals.totalComments.toLocaleString()}</p>
             <span className="text-[10px] text-slate-400">active reader discussions</span>
           </div>
         </div>
@@ -136,7 +145,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <p className="text-3xl font-bold font-display text-slate-900">2.64%</p>
+            <p className="text-3xl font-bold font-display text-slate-900">{((totalSubscribers / Math.max(accountTotals.totalViews, 1)) * 100).toFixed(2)}%</p>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-lg">
               <ArrowUpRight className="w-3 h-3" /> +0.4%
             </span>
@@ -294,7 +303,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
           </div>
 
           <div className="mt-6 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 font-medium">
-            💡 <strong>SMM Insight:</strong> Focus on converting the 18.5K Substack Internal views—this channel yields your highest conversion rate (5.30%).
+            💡 <strong>SMM Insight:</strong> Focus on converting Substack Internal discovery traffic—this channel yields your highest conversion rate (8.03%).
           </div>
         </div>
       </div>
