@@ -2,14 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { Article, TopicOption, CtaTypeOption } from '../types';
 import { MOCK_ARTICLES } from '../mockData';
 import { exportToCsv } from '../utils/exportCsv';
-import { 
-  FileText, 
-  Filter, 
-  ChevronRight, 
-  X, 
-  Sparkles, 
-  TrendingUp, 
-  Tag, 
+import {
+  FileText,
+  Filter,
+  ChevronRight,
+  X,
+  Sparkles,
+  TrendingUp,
+  Tag,
   BookOpen,
   BarChart2,
   Award,
@@ -20,13 +20,13 @@ import {
   Download,
   ChevronLeft
 } from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   Cell
 } from 'recharts';
@@ -63,7 +63,7 @@ export const ArticlePerformanceTab: React.FC = () => {
     return MOCK_ARTICLES.filter((art) => {
       const matchTopic = selectedTopic === 'All' || art.topic === selectedTopic;
       const matchCta = selectedCta === 'All' || art.CTAtype === selectedCta;
-      const matchSearch = searchQuery.trim() === '' || 
+      const matchSearch = searchQuery.trim() === '' ||
         art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         art.thesis.toLowerCase().includes(searchQuery.toLowerCase());
       return matchTopic && matchCta && matchSearch;
@@ -76,11 +76,11 @@ export const ArticlePerformanceTab: React.FC = () => {
       let aVal = a[sortKey];
       let bVal = b[sortKey];
       if (typeof aVal === 'string') {
-        return sortDirection === 'asc' 
+        return sortDirection === 'asc'
           ? (aVal as string).localeCompare(bVal as string)
           : (bVal as string).localeCompare(aVal as string);
       }
-      return sortDirection === 'asc' 
+      return sortDirection === 'asc'
         ? (aVal as number) - (bVal as number)
         : (bVal as number) - (aVal as number);
     });
@@ -131,7 +131,7 @@ export const ArticlePerformanceTab: React.FC = () => {
 
   const renderSortIcon = (key: SortKey) => {
     if (sortKey !== key) return <ArrowUpDown className="w-3 h-3 text-slate-400 opacity-60" />;
-    return sortDirection === 'asc' 
+    return sortDirection === 'asc'
       ? <ArrowUp className="w-3 h-3 text-amber-600 font-bold" />
       : <ArrowDown className="w-3 h-3 text-amber-600 font-bold" />;
   };
@@ -245,11 +245,10 @@ export const ArticlePerformanceTab: React.FC = () => {
                 <button
                   key={limit}
                   onClick={() => setLeaderboardLimit(limit)}
-                  className={`px-2 py-0.5 rounded-md cursor-pointer transition-all ${
-                    leaderboardLimit === limit
+                  className={`px-2 py-0.5 rounded-md cursor-pointer transition-all ${leaderboardLimit === limit
                       ? 'bg-slate-900 text-white font-bold shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                    }`}
                 >
                   {limit === 30 ? 'All' : `Top ${limit}`}
                 </button>
@@ -263,7 +262,7 @@ export const ArticlePerformanceTab: React.FC = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
                 <XAxis type="number" stroke="#64748b" fontSize={11} />
                 <YAxis dataKey="name" type="category" stroke="#475569" fontSize={10} width={140} tickLine={false} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#ffffff', borderColor: '#cbd5e1', borderRadius: '8px', color: '#0f172a', fontWeight: '600' }}
                   formatter={(val: any) => [`+${val} Subscribers`, 'Signups']}
                 />
@@ -298,15 +297,15 @@ export const ArticlePerformanceTab: React.FC = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="name" stroke="#64748b" fontSize={10} angle={-25} textAnchor="end" interval={0} />
                 <YAxis stroke="#64748b" fontSize={11} unit="%" />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#ffffff', borderColor: '#cbd5e1', borderRadius: '8px', color: '#0f172a', fontWeight: '600' }}
                   formatter={(val: any) => [`${val}%`, 'Conversion Rate']}
                 />
                 <Bar dataKey="conversionRate" fill="#3b82f6" radius={[6, 6, 0, 0]}>
                   {leaderboardData.map((entry, index) => (
-                    <Cell 
-                      key={`rate-cell-${index}`} 
-                      fill={entry.conversionRate >= 2.5 ? '#059669' : entry.conversionRate >= 1.5 ? '#d97706' : '#dc2626'} 
+                    <Cell
+                      key={`rate-cell-${index}`}
+                      fill={entry.conversionRate >= 2.5 ? '#059669' : entry.conversionRate >= 1.5 ? '#d97706' : '#dc2626'}
                     />
                   ))}
                 </Bar>
@@ -338,11 +337,10 @@ export const ArticlePerformanceTab: React.FC = () => {
                   setPageSize(sz);
                   setCurrentPage(1);
                 }}
-                className={`px-2 py-0.5 rounded-md border text-[11px] font-semibold cursor-pointer ${
-                  pageSize === sz 
+                className={`px-2 py-0.5 rounded-md border text-[11px] font-semibold cursor-pointer ${pageSize === sz
                     ? 'bg-slate-900 text-white border-slate-900 font-bold'
                     : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
-                }`}
+                  }`}
               >
                 {sz}
               </button>
@@ -354,7 +352,7 @@ export const ArticlePerformanceTab: React.FC = () => {
           <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-slate-100 text-slate-600 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200 select-none">
               <tr>
-                <th 
+                <th
                   className="py-3.5 px-4 cursor-pointer hover:text-slate-900 transition-colors"
                   onClick={() => handleSort('title')}
                 >
@@ -363,7 +361,7 @@ export const ArticlePerformanceTab: React.FC = () => {
                     {renderSortIcon('title')}
                   </div>
                 </th>
-                <th 
+                <th
                   className="py-3.5 px-4 cursor-pointer hover:text-slate-900 transition-colors"
                   onClick={() => handleSort('publishDate')}
                 >
@@ -372,7 +370,7 @@ export const ArticlePerformanceTab: React.FC = () => {
                     {renderSortIcon('publishDate')}
                   </div>
                 </th>
-                <th 
+                <th
                   className="py-3.5 px-4 cursor-pointer hover:text-slate-900 transition-colors"
                   onClick={() => handleSort('views')}
                 >
@@ -381,7 +379,7 @@ export const ArticlePerformanceTab: React.FC = () => {
                     {renderSortIcon('views')}
                   </div>
                 </th>
-                <th 
+                <th
                   className="py-3.5 px-4 cursor-pointer hover:text-slate-900 transition-colors"
                   onClick={() => handleSort('subscribersGained')}
                 >
@@ -390,7 +388,7 @@ export const ArticlePerformanceTab: React.FC = () => {
                     {renderSortIcon('subscribersGained')}
                   </div>
                 </th>
-                <th 
+                <th
                   className="py-3.5 px-4 cursor-pointer hover:text-slate-900 transition-colors"
                   onClick={() => handleSort('conversionRate')}
                 >
@@ -428,13 +426,12 @@ export const ArticlePerformanceTab: React.FC = () => {
                       +{art.subscribersGained}
                     </td>
                     <td className="py-4 px-4 font-mono">
-                      <span className={`inline-flex items-center gap-1 font-bold px-2.5 py-0.5 rounded-md ${
-                        art.conversionRate >= 2.5 
-                          ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' 
-                          : art.conversionRate >= 1.5 
-                          ? 'text-amber-700 bg-amber-50 border border-amber-200' 
-                          : 'text-rose-700 bg-rose-50 border border-rose-200'
-                      }`}>
+                      <span className={`inline-flex items-center gap-1 font-bold px-2.5 py-0.5 rounded-md ${art.conversionRate >= 2.5
+                          ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
+                          : art.conversionRate >= 1.5
+                            ? 'text-amber-700 bg-amber-50 border border-amber-200'
+                            : 'text-rose-700 bg-rose-50 border border-rose-200'
+                        }`}>
                         {art.conversionRate.toFixed(2)}%
                       </span>
                     </td>
@@ -470,11 +467,10 @@ export const ArticlePerformanceTab: React.FC = () => {
                 <button
                   key={p}
                   onClick={() => setCurrentPage(p)}
-                  className={`w-7 h-7 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    currentPage === p
+                  className={`w-7 h-7 rounded-lg text-xs font-semibold transition-all cursor-pointer ${currentPage === p
                       ? 'bg-slate-900 text-white font-bold'
                       : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
-                  }`}
+                    }`}
                 >
                   {p}
                 </button>
@@ -532,7 +528,6 @@ export const ArticlePerformanceTab: React.FC = () => {
               </div>
             </div>
 
-            {/* 3-Tier SMM Diagnostic Playbook */}
             <div className="space-y-3 mb-5 text-xs">
               <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl font-semibold">
                 <TrendingUp className="w-4 h-4" />
@@ -543,34 +538,6 @@ export const ArticlePerformanceTab: React.FC = () => {
                 <h4 className="font-bold text-slate-800 mb-1">Content Thesis / Summary:</h4>
                 <p className="text-slate-600 leading-relaxed">{activeArticle.thesis}</p>
               </div>
-
-              {/* Tier 1: The Why */}
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-                <strong className="text-amber-800 block font-display text-[10px] mb-1 uppercase tracking-wider">
-                  🔍 1. The Metric Diagnosis (The Why):
-                </strong>
-                <p className="text-slate-700 leading-relaxed">{activeArticle.smmAdvice}</p>
-              </div>
-
-              {/* Tier 2: Engagement Friction Point */}
-              {activeArticle.frictionPoint && (
-                <div className="p-3.5 rounded-xl bg-rose-50/60 border border-rose-200">
-                  <strong className="text-rose-800 block font-display text-[10px] mb-1 uppercase tracking-wider">
-                    ⚠️ 2. Engagement Friction Point:
-                  </strong>
-                  <p className="text-rose-950 leading-relaxed font-medium">{activeArticle.frictionPoint}</p>
-                </div>
-              )}
-
-              {/* Tier 3: CTA Strategy */}
-              {activeArticle.ctaStrategy && (
-                <div className="p-3.5 rounded-xl bg-indigo-50/60 border border-indigo-200">
-                  <strong className="text-indigo-800 block font-display text-[10px] mb-1 uppercase tracking-wider">
-                    📍 3. Recommended CTA Strategy:
-                  </strong>
-                  <p className="text-indigo-950 leading-relaxed font-medium">{activeArticle.ctaStrategy}</p>
-                </div>
-              )}
 
               <div className="flex flex-wrap gap-2 text-[11px]">
                 <span className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-800 font-semibold">
@@ -585,14 +552,13 @@ export const ArticlePerformanceTab: React.FC = () => {
               </div>
             </div>
 
-            {/* Actionable Blueprint */}
-            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
-              <div className="flex items-center gap-2 text-emerald-900 font-bold font-display mb-1.5">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span>🚀 The Future Action (Actionable Blueprint for Next Article):</span>
+            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs">
+              <div className="flex items-center gap-2 text-amber-900 font-bold font-display mb-1.5">
+                <Sparkles className="w-4 h-4 text-amber-600" />
+                <span>Social Media Manager (SMM) Takeaway:</span>
               </div>
-              <p className="text-emerald-950 leading-relaxed font-semibold">
-                {activeArticle.futureAction || activeArticle.smmAdvice}
+              <p className="text-amber-950 leading-relaxed font-medium">
+                {activeArticle.smmAdvice}
               </p>
             </div>
           </div>
