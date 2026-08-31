@@ -1559,45 +1559,47 @@ export const MOCK_TRAFFIC_SOURCES: TrafficSourceItem[] = [
 ];
 
 // Authentic subscriber growth curve: 35 (Apr) -> 100 (May milestone) -> 145 (Jun) -> 185 (Jul) -> 218 (Aug Today)
+// Real data from Substack API: totalEmail=182, totalEmailLast30Days=24, appSubscribers=79, appSubscribersLast30Days=18
 export const MOCK_TIME_SERIES = {
   'Last 7 Days': [
-    { date: 'Aug 25', subscribers: 208, organicSubscribers: 2, referralSubscribers: 1 },
-    { date: 'Aug 26', subscribers: 210, organicSubscribers: 2, referralSubscribers: 0 },
-    { date: 'Aug 27', subscribers: 212, organicSubscribers: 1, referralSubscribers: 1 },
-    { date: 'Aug 28', subscribers: 214, organicSubscribers: 2, referralSubscribers: 0 },
-    { date: 'Aug 29', subscribers: 215, organicSubscribers: 1, referralSubscribers: 0 },
-    { date: 'Aug 30', subscribers: 216, organicSubscribers: 1, referralSubscribers: 0 },
-    { date: 'Aug 31', subscribers: 218, organicSubscribers: 2, referralSubscribers: 0 },
+    { date: 'Aug 25', subscribers: 176, organicSubscribers: 1, referralSubscribers: 0 },
+    { date: 'Aug 26', subscribers: 177, organicSubscribers: 1, referralSubscribers: 0 },
+    { date: 'Aug 27', subscribers: 178, organicSubscribers: 1, referralSubscribers: 0 },
+    { date: 'Aug 28', subscribers: 179, organicSubscribers: 1, referralSubscribers: 0 },
+    { date: 'Aug 29', subscribers: 180, organicSubscribers: 1, referralSubscribers: 0 },
+    { date: 'Aug 30', subscribers: 181, organicSubscribers: 1, referralSubscribers: 0 },
+    { date: 'Aug 31', subscribers: 182, organicSubscribers: 1, referralSubscribers: 0 },
   ],
   'Last 30 Days': Array.from({ length: 30 }, (_, i) => {
     const day = i + 1;
-    const baseSubs = 182 + Math.floor((i / 29) * 36);
+    // 24 new subs in last 30 days → from 158 to 182
+    const baseSubs = 158 + Math.round((i / 29) * 24);
     return {
       date: `Aug ${day}`,
       subscribers: baseSubs,
-      organicSubscribers: 1 + (i % 3 === 0 ? 1 : 0),
-      referralSubscribers: (i % 5 === 0 ? 1 : 0),
+      organicSubscribers: i % 3 === 0 ? 1 : 0,
+      referralSubscribers: i % 7 === 0 ? 1 : 0,
     };
   }),
   'Last 90 Days': [
-    { date: 'Wk 1 (Jun)', subscribers: 135, organicSubscribers: 8, referralSubscribers: 3 },
-    { date: 'Wk 2 (Jun)', subscribers: 142, organicSubscribers: 7, referralSubscribers: 2 },
-    { date: 'Wk 3 (Jun)', subscribers: 150, organicSubscribers: 8, referralSubscribers: 3 },
-    { date: 'Wk 4 (Jun)', subscribers: 158, organicSubscribers: 8, referralSubscribers: 2 },
-    { date: 'Wk 5 (Jul)', subscribers: 165, organicSubscribers: 7, referralSubscribers: 2 },
-    { date: 'Wk 6 (Jul)', subscribers: 172, organicSubscribers: 7, referralSubscribers: 2 },
-    { date: 'Wk 7 (Jul)', subscribers: 180, organicSubscribers: 8, referralSubscribers: 3 },
-    { date: 'Wk 8 (Jul)', subscribers: 188, organicSubscribers: 8, referralSubscribers: 2 },
-    { date: 'Wk 9 (Aug)', subscribers: 196, organicSubscribers: 8, referralSubscribers: 2 },
-    { date: 'Wk 10 (Aug)', subscribers: 203, organicSubscribers: 7, referralSubscribers: 2 },
-    { date: 'Wk 11 (Aug)', subscribers: 211, organicSubscribers: 8, referralSubscribers: 2 },
-    { date: 'Wk 12 (Aug)', subscribers: 218, organicSubscribers: 7, referralSubscribers: 2 },
+    { date: 'Wk 1 (Jun)', subscribers: 110, organicSubscribers: 5, referralSubscribers: 2 },
+    { date: 'Wk 2 (Jun)', subscribers: 116, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 3 (Jun)', subscribers: 122, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 4 (Jun)', subscribers: 128, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 5 (Jul)', subscribers: 134, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 6 (Jul)', subscribers: 140, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 7 (Jul)', subscribers: 146, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 8 (Jul)', subscribers: 152, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 9 (Aug)', subscribers: 158, organicSubscribers: 4, referralSubscribers: 2 },
+    { date: 'Wk 10 (Aug)', subscribers: 166, organicSubscribers: 6, referralSubscribers: 2 },
+    { date: 'Wk 11 (Aug)', subscribers: 174, organicSubscribers: 6, referralSubscribers: 2 },
+    { date: 'Wk 12 (Aug)', subscribers: 182, organicSubscribers: 6, referralSubscribers: 2 },
   ],
   'All-Time': [
     { date: 'Apr 2026', subscribers: 35, organicSubscribers: 28, referralSubscribers: 7 },
     { date: 'May 2026 (100 Subs)', subscribers: 100, organicSubscribers: 52, referralSubscribers: 13 },
-    { date: 'Jun 2026', subscribers: 145, organicSubscribers: 36, referralSubscribers: 9 },
-    { date: 'Jul 2026', subscribers: 185, organicSubscribers: 32, referralSubscribers: 8 },
-    { date: 'Aug 2026', subscribers: 218, organicSubscribers: 26, referralSubscribers: 7 },
+    { date: 'Jun 2026', subscribers: 128, organicSubscribers: 22, referralSubscribers: 6 },
+    { date: 'Jul 2026', subscribers: 152, organicSubscribers: 18, referralSubscribers: 6 },
+    { date: 'Aug 2026', subscribers: 182, organicSubscribers: 24, referralSubscribers: 6 },
   ]
 };
