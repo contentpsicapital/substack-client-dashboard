@@ -40,14 +40,31 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ dateRange }) => {
   const netGained = totalSubscribers - initialSubs;
   const growthPercent = ((netGained / initialSubs) * 100).toFixed(1);
 
-  // Compute account-wide totals dynamically from all articles + notes
+  // Compute account-wide totals dynamically based on active dateRange filter
   const accountTotals = useMemo(() => {
-    const totalViews = MOCK_ARTICLES.reduce((s, a) => s + a.views, 0) + MOCK_NOTES.reduce((s, n) => s + n.impressions, 0);
-    const totalLikes = MOCK_ARTICLES.reduce((s, a) => s + a.likes, 0) + MOCK_NOTES.reduce((s, n) => s + n.likes, 0);
-    const totalRestacks = MOCK_NOTES.reduce((s, n) => s + n.restacks, 0);
-    const totalComments = MOCK_ARTICLES.reduce((s, a) => s + a.comments, 0) + MOCK_NOTES.reduce((s, n) => s + n.replies, 0);
+    let cutoffDays = 9999;
+    if (dateRange === 'Last 7 Days') cutoffDays = 7;
+    else if (dateRange === 'Last 30 Days') cutoffDays = 30;
+    else if (dateRange === 'Last 90 Days') cutoffDays = 90;
+
+    const refDate = new Date('2026-08-31').getTime();
+    const isWithinRange = (dateStr: string) => {
+      if (cutoffDays === 9999) return true;
+      const d = new Date(dateStr).getTime();
+      if (isNaN(d)) return true;
+      const diffDays = (refDate - d) / (1000 * 3600 * 24);
+      return diffDays <= cutoffDays;
+    };
+
+    const filteredArticles = MOCK_ARTICLES.filter(a => isWithinRange(a.publishDate));
+    const filteredNotes = MOCK_NOTES.filter(n => isWithinRange(n.publishDate));
+
+    const totalViews = filteredArticles.reduce((s, a) => s + a.views, 0) + filteredNotes.reduce((s, n) => s + n.impressions, 0);
+    const totalLikes = filteredArticles.reduce((s, a) => s + a.likes, 0) + filteredNotes.reduce((s, n) => s + n.likes, 0);
+    const totalRestacks = filteredNotes.reduce((s, n) => s + n.restacks, 0);
+    const totalComments = filteredArticles.reduce((s, a) => s + a.comments, 0) + filteredNotes.reduce((s, n) => s + n.replies, 0);
     return { totalViews, totalLikes, totalRestacks, totalComments };
-  }, []);
+  }, [dateRange]);
 
   const COLORS = ['#d97706', '#2563eb', '#059669', '#475569', '#7c3aed'];
 
